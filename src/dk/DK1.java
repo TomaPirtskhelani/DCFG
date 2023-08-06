@@ -41,14 +41,16 @@ public class DK1 {
             State currentState = queue.remove();
             currentState.makeShiftMoves(states, g);
 
-            System.out.println(queue.size() + " " + states.size());
+            if (states.size() % 100 == 0){
+                System.out.println(queue.size() + " " + states.size());
+            }
 
             for (Map.Entry<Symbol, State> entry : currentState.getPaths().entrySet()) {
                 State newState = entry.getValue();
 
                 boolean flag = false;
                 for (State state : queueCheck){
-                    if (state.sameItems(newState)){
+                    if (state.getItems().size() == newState.getItems().size() && state.sameItems(newState)){
                         flag = true;
                         break;
                     }
@@ -128,6 +130,10 @@ public class DK1 {
 
         while (currentState != null) {
 
+            //System.out.println("\n");
+            //System.out.println(currentSymbol);
+            //System.out.println(currentState.toStringOnlyState());
+
             // If complete Item Check if it is the handle
             if (!currentState.getCompleteItems().isEmpty()) {
                 for (Item item : currentState.getCompleteItems()) {
@@ -163,25 +169,7 @@ public class DK1 {
 
     public ArrayList<Symbol> makeReduction(ArrayList<Symbol> validStringArray, Production handle, int dotIndex) {
 
-        int experimentIndex = dotIndex - handle.getRight().size();
-
-        int handleIndex = -1;
-        for (int i = 0; i <= validStringArray.size() - handle.getRight().size(); i++){
-            boolean equals = true;
-            for(int j = 0; j < handle.getRight().size(); j++) {
-                if (!validStringArray.get(i + j).equals(handle.getRight().get(j))){
-                    equals = false;
-                    break;
-                }
-            }
-            if (equals) {
-                handleIndex = i;
-                break;
-            }
-        }
-
-        System.out.println(handleIndex + " vs " + experimentIndex);
-        handleIndex = experimentIndex;
+        int handleIndex = dotIndex - handle.getRight().size();
 
         // If find Handle, make a reduction
         if(handleIndex != -1) {

@@ -129,6 +129,8 @@ public class State {
         HashSet<Item> items1 = items;
         HashSet<Item> items2 = newState.getItems();
 
+        if (items1.size() != items2.size()) return false;
+
         for (Item item1 : items1){
             boolean flag = false;
             for (Item item2 : items2){
