@@ -3,6 +3,7 @@ package app;
 import java.io.FileNotFoundException;
 
 import dk.DK1;
+import dk.DerivationTreeElement;
 import grammar.Grammar;
 
 public class Main {
@@ -79,9 +80,9 @@ public class Main {
 		//String validString1 = "int A (){return 1}~";
 		//String validString2 = "typedef int` main; int x; int y; int main (){return 0}~";
         String validString2 = "typedef int` pInt; int x; int y; int main (int albama, int tesla){return hello}~";
-        dk1.parseString(validString2);
+        DerivationTreeElement parseTree = dk1.parseString(validString2);
 
-
+        System.out.println(parseTree);
 
 
     }

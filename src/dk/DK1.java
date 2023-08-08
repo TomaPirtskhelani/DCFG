@@ -98,7 +98,7 @@ public class DK1 {
         return true;
     }
 
-    public void parseString(String validString) {
+    public DerivationTreeElement parseString(String validString) {
 
         String str = validString.replaceAll("\\s", "");
 
@@ -111,15 +111,38 @@ public class DK1 {
             index += currentSymbol.length();
         }
 
+        // Initialize The parse tree with the validStringArray and after the parsing only the root will be in the array
+        ArrayList<DerivationTreeElement> parseTree = new ArrayList<>();
+
+        for (Symbol symbol : validStringArray) {
+            parseTree.add(new DerivationTreeElement(symbol));
+        }
+
+        // Parsing Process
         Item handle;
 
         while (!validStringArray.get(0).equals(g.getStart())) {
             handle = findHandle(validStringArray);
-            System.out.println(validStringArray + "     [handle: " + handle +"]");
+
+            //System.out.println(validStringArray + "     [handle: " + handle +"]");
+
+            // Update the valid String Array
             validStringArray = makeReduction(validStringArray, handle.getProduction(), handle.getDotIndex());
+
+            // Update the parse Tree
+            parseTree = DerivationTreeElement.updateTheParseTree(parseTree, handle);
+            /*
+            for (DerivationTreeElement Element : parseTree) {
+                System.out.print(Element.getLabel() + ", ");
+            }
+            System.out.println();
+            */
         }
 
         System.out.println(validStringArray);
+
+        return parseTree.get(0);
+
     }
 
     public Item findHandle(ArrayList<Symbol> validStringArray) {
@@ -171,7 +194,7 @@ public class DK1 {
 
         int handleIndex = dotIndex - handle.getRight().size();
 
-        // If find Handle, make a reduction
+        // If the find Handle, make a reduction
         if(handleIndex != -1) {
             ArrayList<Symbol> newValidStringArray = new ArrayList<>();
 
